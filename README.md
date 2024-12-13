@@ -73,4 +73,66 @@ server-list:
 To activate the new motd the server needs to be rebooted, this is done automatically each day
 
 ## How to add hats
+
+**Important note**  
+The resourcepack for canopy uses a custom `canopymc` namespace. This is to make sure that it does not interfere with any other resourcepack's that the player might be using that still use the custom namespace as is seen in most tutorials.
+### Instructions on adding new items to the canopymc resource pack
+#### **Adjust Namespaces**  
+Open up the custom model .json file and search the file for any references to custom. This is a product of using a `custom` namespace as most tutorials indicate. Change all occurrences to canopymc
+  
+#### **Copy Files**  
+- Copy the custom model (the actual json file) to `\[pack]\assets\minecraft\models\block\canopymc\`
+- Copy any custom block textures to `\[pack]\assets\minecraft\textures\block\canopymc\`
+  
+#### **Add custom model to the base model**
+- Open up the base model that the custom model was based upon (f.e. carved_pumpkin.json)
+- Add an entry to the `overrides` node where:
+  - The `custom_model_data` is an increment one higher of the last entry
+    - `[your_custom_model]` is your model name without the .json
+```json
+    {
+      "predicate": {
+        "custom_model_data": 3
+      },
+      "model": "block/canopymc/[your_custom_model]"
+    }
+```
+#### **Zip and rename**  
+Due to the nature of how Mojang treats resource packs it will only prompt the player for a new download if:
+- The name of the resource pack has changed
+- The SHA key got updated
+Since I was unable to get the resource pack working with a proper SHA key I went for the method of the pack name.
+The current format for the pack is `canopy[YYYYMMDDHHMM].zip`
+#### **Upload the pack**
+Log into the box via sFTP and upload the pack to `/home/minecraft/resourcepacks`. 
+#### **Update server.properties**
+open `server.properties` and update
+```
+resource-pack=https\://www.canopymc.net/assets/resourcepacks/[new_pack_zip_file_name]
+resource-pack-sha1=[new_sha1_key]
+```
+Folder structure of the resourcepack
+```
+canopy202403072253
++-- assets
+  +-- minecraft
+    +-- models
+      +-- block
+        +-- canopymc
+          --- canopy_hat.json
+          --- propeller_hat.json 
+      +-- item
+        --- carved_pumpkin.json
+    +-- textures  
+      +-- block
+        +-- canopymc
+          --- ...
+          --- ...
+      +-- misc
+        --- pumpkinblur.png
+--- pack.mcmeta
+--- pack.png
+```
 ## How to copy paste from console
+SHOULD YOU EVER FEEL A NEED TO COPY PASTE SOMETHING FROM THE BOX, WHATEVER YOU DO, DO NOT CTRL-C IT. AS THIS WILL SHUTDOWN THE SERVER.  
+Should you feel a need to copy stuff, just select it with the mouse, it will be automatically copied to the clipboard.
